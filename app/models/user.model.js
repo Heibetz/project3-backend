@@ -20,6 +20,11 @@ const User = SequelizeInstance.define("user", {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  role: {
+    type: Sequelize.ENUM("athlete", "coach", "admin"),
+    allowNull: false,
+    defaultValue: "athlete",
+  },
   // refresh_token: {
   //   type: Sequelize.STRING(512),
   //   allowNull: true

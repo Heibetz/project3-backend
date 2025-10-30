@@ -1,5 +1,5 @@
 [Unit]
-Description=NodeJS Tutorial App
+Description=Workout App
 After=network.target
  
 [Service]
