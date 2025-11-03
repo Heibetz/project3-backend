@@ -5,19 +5,19 @@
 
 
   // Create a new User
-  router.post("/", [authenticate], users.create);
+  router.post("/", users.create);
 
   // Retrieve all People
-  router.get("/", [authenticate], users.findAll);
+  router.get("/", users.findAll);
 
   // Retrieve a single User with id
-  router.get("/:id", [authenticate], users.findOne);
+  router.get("/:id", users.findOne);
 
   // Update a User with id
-  router.put("/:id", [authenticate], users.update);
+  router.put("/:id", users.update);
 
   // Delete a User with id
-  router.delete("/:id", [authenticate], users.delete);
+  router.delete("/:id", users.delete);
 
 
   export default router;
