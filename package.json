@@ -1,13 +1,13 @@
 {
   "type": "module",
-  "name": "tutorial-backend",
+  "name": "tracker-t5",
   "version": "1.0.0",
-  "description": "Tutorial Node.js with Rest API",
+  "description": "Tracker app",
   "main": "server.js",
   "scripts": {
     "test": "jest --",
     "start": "node server.js",
-    "bundle": "mkdir deploy && cp -r app server.js package.json package-lock.json tutorial-backend.service .env deploy"
+    "bundle": "mkdir deploy && cp -r app server.js package.json package-lock.json tracker-t5-backend.service .env deploy"
   },
   "keywords": [
     "node.js",
