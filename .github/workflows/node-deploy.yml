@@ -55,7 +55,7 @@ jobs:
           privateKey: ${{ secrets.SERVER_SSH_KEY }}
           debug: false
           command: |
-            cd nodeapps/2025/project3/t5/tracker-t5-backend
+            cd nodeapps/2025/project3/t5
             npm install
             sudo systemctl stop tracker-t5-backend
             sudo cp tracker-t5-backend.service /lib/systemd/system/tracker-t5-backend.service
