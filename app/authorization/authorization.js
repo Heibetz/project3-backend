@@ -12,19 +12,27 @@ const authenticate = (req, res, next) => {
       Session.findAll({ where: { token: token } })
         .then((data) => {
           let session = data[0];
-          console.log(session.expirationDate);
-          if (session != null) {
-            if (session.expirationDate >= Date.now()) {
-              next();
-              return;
-            } else
-              return res.status(401).send({
-                message: "Unauthorized! Expired Token, Logout and Login again",
-              });
+          if (!session) {
+            return res.status(401).send({
+              message: "Unauthorized! Invalid token",
+            });
+          }
+          
+          if (session.expirationDate >= Date.now()) {
+            req.userId = session.userId; // Pass user ID to the next middleware
+            next();
+            return;
+          } else {
+            return res.status(401).send({
+              message: "Unauthorized! Expired Token, Logout and Login again",
+            });
           }
         })
         .catch((err) => {
-          console.log(err.message);
+          console.error("Authentication error:", err.message);
+          return res.status(500).send({
+            message: "Error checking authentication",
+          });
         });
     }
   } else {
