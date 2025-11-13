@@ -24,6 +24,10 @@ const ExercisePlan = SequelizeInstance.define("exercisePlan", {
     allowNull: false,
     defaultValue: false,
   },
+  day: {
+    type: Sequelize.ENUM("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"),
+    allowNull: true,
+  },
 });
 
 export default ExercisePlan;
