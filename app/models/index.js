@@ -9,6 +9,7 @@ import Session from "./session.model.js";
 import Tutorial from "./tutorial.model.js";
 import Lesson from "./lesson.model.js"; 
 import Exercise from "./exercise.model.js";
+import Result from "./result.model.js";
 
 
 const db = {};
@@ -20,6 +21,7 @@ db.session = Session;
 db.tutorial = Tutorial;
 db.lesson = Lesson;
 db.exercise = Exercise;
+db.result = Result;
 
 // foreign key for session
 db.user.hasMany(
@@ -67,6 +69,30 @@ db.exercise.belongsTo(
   db.user,
   { as: "creator" },
   { foreignKey: { name: "created_by", allowNull: false }, onDelete: "CASCADE" }
+);
+
+// foreign key for results (user_id -> user)
+db.user.hasMany(
+  db.result,
+  { as: "results" },
+  { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" }
+);
+db.result.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" }
+);
+
+// foreign key for results (exercise_id -> exercise)
+db.exercise.hasMany(
+  db.result,
+  { as: "results" },
+  { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" }
+);
+db.result.belongsTo(
+  db.exercise,
+  { as: "exercise" },
+  { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" }
 );
 
 export default db;
