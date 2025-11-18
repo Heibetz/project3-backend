@@ -7,25 +7,18 @@ import db  from "./app/models/index.js";
 
 // Alter existing tables to add new columns without losing data
 // This is safer than force: true but may not work with all schema changes
-if (process.env.NODE_ENV === "production") {
-  db.sequelize
-    .authenticate()
-    .then(() => {
-      console.log("Database schema updated successfully");
-    })
-    .catch((err) => {
-      console.error("Failed to update database schema:", err);
-    });
-} else {
-  db.sequelize
-    .sync({ alter: true })
-    .then(() => {
-      console.log("Database schema updated successfully");
-    })
-    .catch((err) => {
-      console.error("Failed to update database schema:", err);
-    });
-}
+db.sequelize.sync({ alter: true }).then(() => {
+  console.log("Database schema updated successfully");
+}).catch((err) => {
+  console.error("Failed to update database schema:", err);
+  // Fallback to force sync if alter fails
+  console.log("Attempting force sync...");
+  return db.sequelize.sync({ force: true });
+}).then(() => {
+  console.log("Database synced successfully");
+}).catch((err) => {
+  console.error("Failed to sync database:", err);
+});
 
 const app = express();
 
