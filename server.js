@@ -4,7 +4,7 @@ import express, { json, urlencoded } from "express"
 import cors from "cors";
 
 import db  from "./app/models/index.js";
-
+//test
 // Alter existing tables to add new columns without losing data
 // This is safer than force: true but may not work with all schema changes
 db.sequelize.sync({ alter: true }).then(() => {
