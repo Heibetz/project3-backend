@@ -21,6 +21,9 @@ router.delete("/:id", authenticate, exercisePlans.delete);
 // Add exercise to plan
 router.post("/:id/exercises", authenticate, exercisePlans.addExercise);
 
+// Update exercise in plan
+router.put("/:planId/exercises/:exerciseId", authenticate, exercisePlans.updateExercise);
+
 // Remove exercise from plan
 router.delete("/:planId/exercises/:exerciseId", authenticate, exercisePlans.removeExercise);
 
