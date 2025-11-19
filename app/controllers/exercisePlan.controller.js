@@ -20,6 +20,7 @@ exports.create = (req, res) => {
     description: req.body.description,
     created_by: req.body.created_by,
     is_standard: req.body.is_standard || false,
+    day: req.body.day || null,
   };
 
   ExercisePlan.create(exercisePlan)
@@ -62,7 +63,7 @@ exports.findAll = (req, res) => {
     include: [{
       model: Exercise,
       as: "exercises",
-      through: { attributes: [] }
+      through: { attributes: ["order", "sets", "reps", "duration"] }
     }]
   })
     .then((data) => res.send(data))
@@ -141,8 +142,14 @@ exports.addExercise = (req, res) => {
   const planId = req.params.id;
   const { exercise_id, sets, reps, duration, order } = req.body;
 
+  console.log("addExercise - Request body:", req.body);
+  console.log("addExercise - exercise_id:", exercise_id);
+
   if (!exercise_id) {
-    res.status(400).send({ message: "exercise_id is required" });
+    res.status(400).send({ 
+      message: "exercise_id is required",
+      receivedBody: req.body 
+    });
     return;
   }
 
@@ -156,9 +163,39 @@ exports.addExercise = (req, res) => {
   })
     .then((data) => res.send(data))
     .catch((err) => {
+      console.error("Error creating exercisePlanExercise:", err);
       res.status(500).send({
         message: err.message || "Error adding exercise to plan.",
       });
+    });
+};
+
+// Update exercise in a plan
+exports.updateExercise = (req, res) => {
+  const { planId, exerciseId } = req.params;
+  const { sets, reps, duration, order } = req.body;
+
+  db.exercisePlanExercise.update(
+    {
+      sets: sets !== undefined ? sets : undefined,
+      reps: reps !== undefined ? reps : undefined,
+      duration: duration !== undefined ? duration : undefined,
+      order: order !== undefined ? order : undefined,
+    },
+    {
+      where: { plan_id: planId, exercise_id: exerciseId },
+    }
+  )
+    .then((num) => {
+      if (num == 1) {
+        res.send({ message: "Exercise updated successfully!" });
+      } else {
+        res.status(404).send({ message: "Exercise not found in plan." });
+      }
+    })
+    .catch((err) => {
+      console.error("Error updating exercise in plan:", err);
+      res.status(500).send({ message: "Error updating exercise in plan." });
     });
 };
 
