@@ -21,6 +21,7 @@ exports.create = (req, res) => {
     created_by: req.body.created_by,
     is_standard: req.body.is_standard || false,
     day: req.body.day || null,
+    sport: req.body.sport || "All",
   };
 
   ExercisePlan.create(exercisePlan)
@@ -52,11 +53,20 @@ exports.findAll = (req, res) => {
   const name = req.query.name;
   const is_standard = req.query.is_standard;
   const created_by = req.query.created_by;
+  const sport = req.query.sport;
 
   const where = {};
   if (name) where.name = { [Op.like]: `%${name}%` };
   if (is_standard !== undefined) where.is_standard = is_standard === "true";
   if (created_by) where.created_by = created_by;
+  
+  // Filter by sport: show plans that match user's sport OR are marked as "All"
+  if (sport) {
+    where[Op.or] = [
+      { sport: sport },
+      { sport: "All" }
+    ];
+  }
 
   ExercisePlan.findAll({ 
     where,
