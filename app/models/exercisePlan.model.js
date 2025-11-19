@@ -28,6 +28,11 @@ const ExercisePlan = SequelizeInstance.define("exercisePlan", {
     type: Sequelize.ENUM("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"),
     allowNull: true,
   },
+  sport: {
+    type: Sequelize.ENUM("Basketball", "Football", "Soccer", "Baseball", "Volleyball", "Track", "Swimming", "Wrestling", "Tennis", "Golf", "Other", "All"),
+    allowNull: true,
+    defaultValue: "All",
+  },
 });
 
 export default ExercisePlan;
