@@ -34,6 +34,17 @@ app.use(cors(corsOptions));
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+
+// Optional request logging (enable by setting ENABLE_REQUEST_LOG=1)
+if (process.env.ENABLE_REQUEST_LOG === '1') {
+  app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+    if ((req.method === 'POST' || req.method === 'PUT') && req.body) {
+      console.log('Body:', req.body);
+    }
+    next();
+  });
+}
   
 // Load the routes from the routes folder
 app.use("/tracker-t5", routes); 

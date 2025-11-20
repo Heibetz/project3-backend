@@ -14,7 +14,8 @@ const sequelize = new Sequelize(
       acquire: dbConfig.pool.acquire,
       idle: dbConfig.pool.idle,
     },
-    logging: false, // Enable SQL query logging
+  // Reduce console noise: disable SQL logging by default. Set ENABLE_SQL_LOG=1 to re-enable.
+  logging: process.env.ENABLE_SQL_LOG === '1' ? console.log : false,
   },
 );
 
