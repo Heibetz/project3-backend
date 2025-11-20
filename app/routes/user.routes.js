@@ -10,6 +10,9 @@
   // Retrieve all People
   router.get("/", users.findAll);
 
+  // Retrieve a single User with email
+  router.get("/email/:email", users.findByEmail);
+
   // Retrieve a single User with id
   router.get("/:id", users.findOne);
 
