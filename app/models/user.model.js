@@ -25,6 +25,10 @@ const User = SequelizeInstance.define("user", {
     allowNull: false,
     defaultValue: "athlete",
   },
+  sport: {
+    type: Sequelize.ENUM("Basketball", "Football", "Soccer", "Baseball", "Volleyball", "Track", "Swimming", "Wrestling", "Tennis", "Golf", "Other"),
+    allowNull: true,
+  },
   // refresh_token: {
   //   type: Sequelize.STRING(512),
   //   allowNull: true

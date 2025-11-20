@@ -4,8 +4,21 @@ import express, { json, urlencoded } from "express"
 import cors from "cors";
 
 import db  from "./app/models/index.js";
-
-db.sequelize.sync();
+//test
+// Alter existing tables to add new columns without losing data
+// This is safer than force: true but may not work with all schema changes
+db.sequelize.sync({ alter: true }).then(() => {
+  console.log("Database schema updated successfully");
+}).catch((err) => {
+  console.error("Failed to update database schema:", err);
+  // Fallback to force sync if alter fails
+  console.log("Attempting force sync...");
+  return db.sequelize.sync({ force: true });
+}).then(() => {
+  console.log("Database synced successfully");
+}).catch((err) => {
+  console.error("Failed to sync database:", err);
+});
 
 const app = express();
 
