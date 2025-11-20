@@ -11,6 +11,7 @@ import Lesson from "./lesson.model.js";
 import Exercise from "./exercise.model.js";
 import ExercisePlan from "./exercisePlan.model.js";
 import ExercisePlanExercise from "./exercisePlanExercise.model.js";
+import Goal from "./goal.model.js";
 
 
 const db = {};
@@ -24,6 +25,7 @@ db.lesson = Lesson;
 db.exercise = Exercise;
 db.exercisePlan = ExercisePlan;
 db.exercisePlanExercise = ExercisePlanExercise;
+db.goal = Goal;
 
 // foreign key for session
 db.user.hasMany(
@@ -103,6 +105,18 @@ db.exercise.belongsToMany(
     otherKey: "plan_id",
     as: "plans"
   }
+);
+
+// foreign key for goals (userId -> user)
+db.user.hasMany(
+  db.goal,
+  { as: "goals" },
+  { foreignKey: { name: "userId", allowNull: false }, onDelete: "CASCADE" }
+);
+db.goal.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: { name: "userId", allowNull: false }, onDelete: "CASCADE" }
 );
 
 export default db;
