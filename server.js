@@ -4,27 +4,34 @@ import express, { json, urlencoded } from "express"
 import cors from "cors";
 
 import db  from "./app/models/index.js";
-//test
-// Alter existing tables to add new columns without losing data
-// This is safer than force: true but may not work with all schema changes
-db.sequelize.sync({ alter: true }).then(() => {
-  console.log("Database schema updated successfully");
-}).catch((err) => {
-  console.error("Failed to update database schema:", err);
-  // Fallback to force sync if alter fails
-  console.log("Attempting force sync...");
-  return db.sequelize.sync({ force: true });
-}).then(() => {
-  console.log("Database synced successfully");
-}).catch((err) => {
-  console.error("Failed to sync database:", err);
-});
+
+// Only sync database in development - DO NOT use alter/force in production!
+if (process.env.NODE_ENV !== 'production') {
+  db.sequelize.sync({ alter: true }).then(() => {
+    console.log("Database schema updated successfully (DEV MODE)");
+  }).catch((err) => {
+    console.error("Failed to update database schema:", err);
+  });
+} else {
+  // In production, just authenticate the connection
+  db.sequelize.authenticate().then(() => {
+    console.log("Database connection established successfully (PRODUCTION MODE)");
+  }).catch((err) => {
+    console.error("Unable to connect to database:", err);
+  });
+}
 
 const app = express();
 
-// Also use the cors middleware as backup
+// Configure CORS - works locally and in production
+const allowedOrigins = [
+  "http://localhost:8081",
+  "http://localhost:5173",
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 var corsOptions = {
-  origin: "http://localhost:8081",
+  origin: allowedOrigins.length > 0 ? allowedOrigins : "http://localhost:8081",
   credentials: true
 }
 app.use(cors(corsOptions));
