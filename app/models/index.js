@@ -1,4 +1,3 @@
-import dbConfig from "../config/db.config.js";
 import { Sequelize } from "sequelize";
 import sequelize from "../config/sequelizeInstance.js";
 
@@ -6,8 +5,6 @@ import sequelize from "../config/sequelizeInstance.js";
 
 import User from "./user.model.js";
 import Session from "./session.model.js";
-import Tutorial from "./tutorial.model.js";
-import Lesson from "./lesson.model.js"; 
 import Exercise from "./exercise.model.js";
 import Result from "./result.model.js";
 import ExercisePlan from "./exercisePlan.model.js";
@@ -20,8 +17,6 @@ db.sequelize = sequelize;
 
 db.user = User;
 db.session = Session;
-db.tutorial = Tutorial;
-db.lesson = Lesson;
 db.exercise = Exercise;
 db.result = Result;
 db.exercisePlan = ExercisePlan;
@@ -36,30 +31,6 @@ db.user.hasMany(
 db.session.belongsTo(
   db.user,
   { as: "user" },
-  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-);
-
-// foreign key for tutorials
-db.user.hasMany(
-  db.tutorial,
-  { as: "tutorial" },
-  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-);
-db.tutorial.belongsTo(
-  db.user,
-  { as: "user" },
-  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-);
-
-// foreign key for lessons
-db.tutorial.hasMany(
-  db.lesson,
-  { as: "lesson" },
-  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-);
-db.lesson.belongsTo(
-  db.tutorial,
-  { as: "tutorial" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
 
