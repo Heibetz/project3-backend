@@ -70,10 +70,12 @@ exports.login = async (req, res) => {
         user = data.dataValues;
       } else {
         // create a new User and save to database
+        // New users default to athlete role (set in model), so set sport to "Other"
         user = {
           fName: firstName,
           lName: lastName,
           email: email,
+          sport: 'Other', // Default sport for new athletes
         };
       }
     })
