@@ -19,9 +19,15 @@ exports.create = (req, res) => {
     lName: req.body.lName,
     email: req.body.email,
     role: req.body.role,
+    sport: req.body.sport,
     // refresh_token: req.body.refresh_token,
     // expiration_date: req.body.expiration_date
   };
+
+  // If user is an athlete and no sport is provided, default to "Other"
+  if (user.role === 'athlete' && !user.sport) {
+    user.sport = 'Other';
+  }
 
   // Save User in the database
   User.create(user)
