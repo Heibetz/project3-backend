@@ -7,6 +7,10 @@ const Goal = SequelizeInstance.define("goal", {
     autoIncrement: true,
     primaryKey: true,
   },
+  user_id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   exercise_id: {
     type: Sequelize.INTEGER,
     allowNull: false,
