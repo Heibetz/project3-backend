@@ -116,4 +116,16 @@ db.goal.belongsTo(
   { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" }
 );
 
+// foreign key for goals (user_id -> user)
+db.user.hasMany(
+  db.goal,
+  { as: "userGoals" },
+  { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" }
+);
+db.goal.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" }
+);
+
 export default db;
