@@ -1,5 +1,6 @@
 import db from "../models/index.js";
 const Result = db.result;
+const Exercise = db.exercise;
 const exports = {};
 
 // Create and Save a new Result
@@ -44,7 +45,15 @@ exports.findAll = (req, res) => {
   if (exercise_id) condition.exercise_id = exercise_id;
   if (user_id) condition.user_id = user_id;
 
-  Result.findAll({ where: condition })
+  Result.findAll({ 
+    where: condition,
+    include: [{
+      model: Exercise,
+      as : "exercise",
+      attributes: ["exercise_id", "name", "description", "type"]
+    }],
+    order: [["date", "DESC"]]
+  })
     .then((data) => {
       res.send(data);
     })
@@ -134,6 +143,12 @@ exports.findAllForExercise = (req, res) => {
   const exerciseId = req.params.exerciseId;
   Result.findAll({
     where: { exercise_id: exerciseId },
+    include: [{ 
+      model: Exercise, 
+      as : "exercise",
+      attributes: ["exercise_id", "name", "description", "type"]
+    }],
+    order: [["date", "DESC"]]
   })
     .then((data) => {
       if (data) {
